@@ -25,6 +25,6 @@ jobs:
           cd /home/ec2-user &&
           python3 -m venv virtualenv &&
           source virtualenv/bin/activate &&
-          pip3 install -r requirements.txt &&
+          pip3 install -r requirement.txt &&
           python3 app.py
           "
