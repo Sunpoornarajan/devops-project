@@ -14,14 +14,14 @@ jobs:
           chmod 400 key.pem
           
       - name: copy app.py
-        run: scp -o StrictHostKeyChecking=no -i key.pem app.py ec2-user@65.1.85.138:/home/ec2-user/
+        run: scp -o StrictHostKeyChecking=no -i key.pem app.py ec2-user@3.109.181.198:/home/ec2-user/
 
       - name: copy requirements.txt
-        run: scp -o StrictHostKeyChecking=no -i key.pem requirement.txt ec2-user@65.1.85.138:/home/ec2-user/
+        run: scp -o StrictHostKeyChecking=no -i key.pem requirement.txt ec2-user@3.109.181.198:/home/ec2-user/
 
       - name: run application
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@65.1.85.138"
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198"
           cd /home/ec2-user &&
           python3 -m venv virtualenv &&
           source virtualenv/bin/activate &&
