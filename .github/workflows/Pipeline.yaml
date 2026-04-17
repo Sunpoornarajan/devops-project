@@ -1,4 +1,4 @@
-name: ec2-pipeline
+name: loadbalancer
 on: workflow_dispatch
 
 jobs:
@@ -6,25 +6,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: installing python
+        uses: actions/setup-python@v6 
+        with:
+          python-version: 'pypy3.10' 
+        
+          
 
       - name: get pem file
         run: |
           echo "${{secrets.sunpo}}" > key.pem
           chmod 400 key.pem
           
-      - name: copy app.py
-        run: scp -o StrictHostKeyChecking=no -i key.pem app.py ec2-user@3.109.181.198:/home/ec2-user/
 
-      - name: copy requirements.txt
-        run: scp -o StrictHostKeyChecking=no -i key.pem requirement.txt ec2-user@3.109.181.198:/home/ec2-user/
+
+      - name: cp python
+        run:
+          scp -o StrictHostKeyChecking=no -i key.pem app.py ec2-user@3.109.181.198:/home/ec2-user/
+
+      - name: cp requirement
+        run:
+          scp -o StrictHostKeyChecking=no -i key.pem requirement.txt ec2-user@3.109.181.198:/home/ec2-user/
 
       - name: run application
-        run: |
-         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198 << 'EOF'
-         cd /home/ec2-user
-         python3 -m venv virtualenv
-         source virtualenv/bin/activate
-         pip3 install -r requirement.txt
-         python3 app.py
-         EOF
+        run:
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198 "cd /home/ec2-user && python3 -m venv virtualenv && source virtualenv/bin/activate && pip3 install -r requirement.txt && python3 app.py"
