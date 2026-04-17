@@ -21,10 +21,10 @@ jobs:
 
       - name: run application
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198"
-          cd /home/ec2-user &&
-          python3 -m venv virtualenv &&
-          source virtualenv/bin/activate &&
-          pip3 install -r requirement.txt &&
-          python3 app.py
-          "
+         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198 << 'EOF'
+         cd /home/ec2-user
+         python3 -m venv virtualenv
+         source virtualenv/bin/activate
+         pip3 install -r requirement.txt
+         python3 app.py
+         EOF
