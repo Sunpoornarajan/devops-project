@@ -33,5 +33,11 @@ jobs:
           scp -o StrictHostKeyChecking=no -i key.pem requirement.txt ec2-user@3.109.181.198:/home/ec2-user/
 
       - name: run application
-        run:
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198 "cd /home/ec2-user && python3 -m venv virtualenv && source virtualenv/bin/activate && pip3 install -r requirement.txt && python3 app.py"
+        run: |
+         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@3.109.181.198 "
+         cd /home/ec2-user &&
+         python3 -m venv virtualenv &&
+         source virtualenv/bin/activate &&
+         pip3 install -r requirement.txt &&
+         nohup python3 app.py > output.log 2>&1 &
+          "
